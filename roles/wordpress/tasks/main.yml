@@ -1,0 +1,35 @@
+---
+- name: Downloading wordpress tar
+  get_url:
+    url: https://wordpress.org/latest.tar.gz
+    dest: /tmp/
+
+- name: Unarchive
+  unarchive:
+    src: /tmp/wordpress-6.1.1.tar.gz
+    dest: /var/www/
+    remote_src: yes
+
+- name: Copying
+  copy:
+    src: "{{ wp_dir }}/wp-config-sample.php"
+    dest: "{{ wp_dir }}/wp-config.php"
+    remote_src: yes
+
+- name: Replacing db vars
+  replace:
+    path: "{{ wp_dir }}/wp-config.php"
+    regexp: "{{ item.regex }}"
+    replace: "{{ item.value }}"
+  loop:
+    - { regex: "database_name_here", value: "{{ wp_db }}" }
+    - { regex: "username_here", value: "{{ wp_user }}" }
+    - { regex: "password_here", value: "{{ wp_user_pass }}" }
+    - { regex: "localhost", value: "{{ wp_db_ip }}"}
+
+- name: Copying apache config to the remote src
+  template:
+    src: templates/000-default.conf.j2
+    dest: /etc/apache2/sites-available/000-default.conf
+  notify:
+    - Restart apache

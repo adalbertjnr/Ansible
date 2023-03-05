@@ -1,0 +1,13 @@
+---
+- name: Installing dependencies
+  apt:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - php8.1
+    - apache2
+    - libapache2-mod-php
+    - php8.1-gd
+    - php-ssh2
+    - mcrypt
+    - php8.1-mysql

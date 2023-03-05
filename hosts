@@ -1,0 +1,17 @@
+[wordpress]
+192.168.0.106
+
+[db]
+192.168.0.109
+
+[servidores:children]
+wordpress
+db
+
+[servidores:vars]
+ansible_user=user
+ansible_ssh_private_key_file="~/.ssh/ansible.pub"
+become_method=su
+become_user=root
+ansible_become_pass=123
+

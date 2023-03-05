@@ -1,0 +1,5 @@
+wp_user: wordpress_user
+wp_db: wordpress_db
+wp_user_pass: 12345
+wp_dir: /var/www/wordpress
+
